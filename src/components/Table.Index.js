@@ -1,5 +1,5 @@
 "use client"
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import TableBody from './TableBody'
 
 
@@ -3244,6 +3244,19 @@ function TableIndex() {
         }
     ]
     const [Participationdata, setParticipationdata] = useState([...data]);
+    const [EligibleforSwags, setEligibleforSwags] = useState(0);
+
+    useEffect(() => {
+        calculateTotalEligibility();
+    }, [])
+
+    const calculateTotalEligibility = () => {
+        let total = 0;
+        data.forEach((ele) => {
+            ele["Total Completions of both Pathways"] == "Yes" && total++;
+        })
+        setEligibleforSwags(total)
+    }
 
     const searchname = (name) => {
         const newArr = [];
@@ -3253,22 +3266,36 @@ function TableIndex() {
             if (match) newArr.push(data[i]);
 
         }
-        console.log(newArr);
+        // console.log(newArr);
         setParticipationdata(newArr);
     }
 
     return (
         <div className='w-full relative px-3'>
 
-            <div className="info m-auto my-10 w-1/2 mob:w-full">
-                <div className="search m-auto space-x-5  flex justify-start items-center border-b-2 border-b-blue-500 w-full ">
+
+
+            <div className="sec m-auto my-10 space-y-5 w-1/2 mob:w-full flex flex-col">
+                <div className="message bg-yellow-100 text-yellow-700 p-5 rounded-lg shadow-lg shadow-yellow-300/30 text-start"><p className="text-center">-: Notice :-</p> Lorem ipsum dolor sit amet consectetur adipisicing elit. Quis facere delectus magnam, odio, rerum totam unde, eaque sunt praesentium soluta labore expedita? Quos distinctio placeat dolorum cumque laborum veritatis magnam.</div>
+
+                <div className="info flex mob:flex-col mob:justify-center mob:items-center mob:space-y-5 mob:p-5 justify-evenly space-x-3 mob:space-x-0">
+                    <div className="eligibleforswag w-fit mob:w-full h-20 p-5 space-x-5 rounded-lg flex flex-row justify-evenly mob:justify-between items-center bg-green-50 shadow-lg shadow-green-300/30">
+                        <p className="text-center mob:text-start text-sm text-green-400">No of Eligible <br /> Participants for swags</p>
+                        <p className="no text-2xl border-l-2 border-l-green-700 pl-3 text-green-800">{EligibleforSwags}</p>
+                    </div>
+                    <div className="eligibleforswag w-fit mob:w-full h-20 p-5 space-x-5 rounded-lg flex flex-row justify-evenly mob:justify-between items-center bg-blue-50 shadow-lg shadow-blue-300/30">
+                        <p className="text-center mob:text-start text-sm text-blue-400">Total No of <br />Participants</p>
+                        <p className="no text-2xl border-l-2 border-l-blue-700 pl-3 text-blue-800">{data.length}</p>
+                    </div>
+                </div>
+                <div className="search m-auto mt-3 py-3 space-x-5  flex justify-start items-center border-b-2 border-b-blue-500 bg-gray-50 w-full ">
                     <div className="icon p-2"><svg xmlns="http://www.w3.org/2000/svg" height="1em" viewBox="0 0 512 512"><path d="M416 208c0 45.9-14.9 88.3-40 122.7L502.6 457.4c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L330.7 376c-34.4 25.2-76.8 40-122.7 40C93.1 416 0 322.9 0 208S93.1 0 208 0S416 93.1 416 208zM208 352a144 144 0 1 0 0-288 144 144 0 1 0 0 288z" fill="#3b82f6" /></svg></div>
                     <div className="input w-full">
                         <input
                             onChange={(e) => {
                                 searchname(e.target.value)
                             }}
-                            className='outline-none w-full' type="text" name="searchbar" id="searchbar" placeholder='Search Your Name Here' />
+                            className='bg-transparent text-lg outline-none w-full' type="text" name="searchbar" id="searchbar" placeholder='Search Your Name Here' />
                     </div>
                 </div>
             </div>
